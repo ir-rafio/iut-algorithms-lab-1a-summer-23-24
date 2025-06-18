@@ -14,7 +14,7 @@ void pre()
     
 }
 
-void dfs_visit(vector<ll>& visited, vector<vector<ll>> adj, int i) {
+void dfs_visit(vector<ll>& visited, vector<vector<ll>>& adj, int i) {
     if (visited[i] == 1) return;
     visited[i] = 1;
     cnt++;
@@ -43,10 +43,16 @@ void solve(int tc)
             pairs.push_back(cnt);
         }
     }
-    for (int i = 0; i < pairs.size(); i++) {
-        for(int j = i+1; j < pairs.size(); j++) {
-            ans += (pairs[i]*pairs[j]);
-        }
+    ll x = pairs.size();
+    vector<ll> prefix(x, 0);
+    for (int i = x-1; i >= 0; i--) {
+        prefix[i] = pairs[i];
+    }
+    for (int i = x-2; i >= 0; i--) {
+        prefix[i] += prefix[i+1];
+    }
+    for (int i = 0; i < pairs.size()-1; i++) {
+        ans += (pairs[i]*prefix[i+1]);
     }
     cout << ans;
 }
